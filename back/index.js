@@ -1,20 +1,33 @@
 import express from 'express'
-import router from './api/router.js'
+import router from './router.js'
 import bodyParser from "body-parser"
-import database from './database.js'
+import {sequelize, loadModels} from './database.js'
 import cors from 'cors'
+import morgan from 'morgan'
 
 const app = express()
 const port = 3000
 
-database.connect()
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.')
+  
+    app.use(cors())
 
-app.use(cors())
+    app.use(bodyParser.json())
+    app.use(morgan('dev'))
+    
+    app.use(router)
 
-app.use(bodyParser.json())
+    sequelize.sync()
 
-app.use('/', router)
-
-app.listen(port, () => {
-  console.log(`Server listening at port: ${port}`)
-})
+    loadModels()
+    
+    app.listen(port, () => {
+      console.log(`Server listening at port: ${port}`)
+    })
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err)
+  })

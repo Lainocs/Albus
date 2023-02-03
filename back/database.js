@@ -1,13 +1,22 @@
 import * as dotenv from 'dotenv'
-import { createConnection } from 'mysql'
+import { Sequelize } from 'sequelize'
+import user from './models/user.js' 
 
 dotenv.config()
 
-const connection = createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
-})
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USER,
+  process.env.DB_PASSWORD,
+  {
+    host: process.env.DB_HOST,
+    port: process.env.DB_PORT,
+    dialect: process.env.DB_DIALECT,
+  }
+)
 
-export default connection
+const loadModels = () => {
+  user(sequelize)
+}
+
+export { sequelize, loadModels }

@@ -15,8 +15,4 @@ const sequelize = new Sequelize(
   }
 )
 
-const loadModels = () => {
-  user(sequelize)
-}
-
-export { sequelize, loadModels }
+export default sequelize

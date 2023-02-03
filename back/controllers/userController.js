@@ -1,8 +1,9 @@
-import { sequelize } from '../database.js'
+import User from '../models/user.js'
 
 const userController = {
   getUsers: async (req, res) => {
-    const users = await sequelize.models.user.findAll()
+    console.log('coucou')
+    const users = await User.findAll()
     res.json(users)
   },
 }

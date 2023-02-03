@@ -1,7 +1,7 @@
 import express from 'express'
 import router from './router.js'
 import bodyParser from "body-parser"
-import {sequelize, loadModels} from './database.js'
+import sequelize from './database.js'
 import cors from 'cors'
 import morgan from 'morgan'
 
@@ -20,9 +20,9 @@ sequelize
     
     app.use(router)
 
-    sequelize.sync()
-
-    loadModels()
+    sequelize
+      .sync()
+      
     
     app.listen(port, () => {
       console.log(`Server listening at port: ${port}`)

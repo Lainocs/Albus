@@ -18,8 +18,9 @@
             name: "Notes",
             slug: "notes"
         }
-    ]
-    let currentRoute = $page.url.pathname;
+    ];
+    $: currentRoute = $page.url.pathname;
+
 </script>
 
 <header class="w-[280px] bg-white border-r border-gray-200 h-screen">
@@ -29,9 +30,10 @@
     {#if routes}
     <ul class="mt-10">
         {#each routes as route}
-            <li class:active={currentRoute === "/" + route.slug}
-                class="py-3 px-6 mx-3 mb-3 rounded transition hover:bg-albus-orange hover:text-white">
-                <a href="/{route.slug}" class="block" on:click={currentRoute = route.slug}>{route.name}</a>
+            <li
+                class="py-3 px-6 mx-3 mb-3 rounded transition hover:bg-albus-orange hover:text-white"
+                class:active={currentRoute === "/" + route.slug}>
+                <a href="/{route.slug}" class="block">{route.name}</a>
             </li>
         {/each}
     </ul>

@@ -7,23 +7,23 @@
             slug: ""
         },
         {
-            name: "Planning",
-            slug: "planning"
+            name: "Etudiant·es",
+            slug: "students"
         },
         {
-            name: "Cours",
-            slug: "cours"
+            name: "Enseignant·es",
+            slug: "teachers"
         },
         {
-            name: "Notes",
-            slug: "notes"
+            name: "Pédagogie",
+            slug: "education"
         }
     ];
     $: currentRoute = $page.url.pathname;
 
 </script>
 
-<header class="w-[280px] bg-white border-r border-gray-200 h-screen">
+<header class="w-[280px] bg-white border-r-2 border-albus-orange h-screen">
     <div class="flex flex-col items-center pt-3">
         <img src="/logo.jpg" alt="Logo" class="w-1/4">
     </div>

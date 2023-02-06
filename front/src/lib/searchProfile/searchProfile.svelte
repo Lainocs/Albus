@@ -21,7 +21,6 @@
     };
 
     let fakePeople = generatePerson(20);
-    console.log(fakePeople);
 
 
     // Filter setup
@@ -36,13 +35,12 @@
             const filteredPeople = fakePeople.filter((people) => {
                 return people.name.toLowerCase().includes(inputValue.toLowerCase()) || people.surname.toLowerCase().includes(inputValue.toLowerCase());
             });
-            console.log(filteredPeople);
             searchResult = filteredPeople;
         }
     };
 
     function boldString(text, query) {
-        return text.replaceAll(query, `<b class="underline">${query}</b>`);
+        return text.replace(new RegExp(query, 'gi'), (match) => `<b class="underline">${match}</b>`);
     }
 
 

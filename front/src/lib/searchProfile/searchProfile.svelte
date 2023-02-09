@@ -1,75 +1,64 @@
 <script>
-    import { faker } from '@faker-js/faker/locale/fr';
+	const fetchUsers = async () => {
+    const response = await fetch('http://localhost:3000/users')
+		const data = await response.json()
+		return data
+  }
 
-    /**
-     * Generate fake data - List of people
-     * @param {number} numUsers
-     * @returns {Array}
-     */
-    const generateFakeData = () => {
-        return {
-            _id: faker.datatype.uuid(),
-            name: faker.name.firstName(),
-            surname: faker.name.lastName(),
-            avatar: faker.image.avatar(),
-            role: faker.helpers.arrayElement(['Étudiant·e', 'Professeur·e']),
-        }
-    };
+	let inputValue = '';
+	let searchResult = [];
 
-    const generatePerson = (numUsers) => {
-        return Array.from({ length: numUsers }, generateFakeData);
-    };
+	$: if (!inputValue) searchResult = []; // <ul> is hidden if inputValue is empty
 
-    let fakePeople = generatePerson(20);
+	const searchPeople = async () => {
+		if (inputValue) {
+			const users = await fetchUsers()
+			searchResult = users.filter((people) => {
+				let fullname = people.name + ' ' + people.surname;
+				let reverseFullname = people.surname + ' ' + people.name;
+				return (
+					fullname.toLowerCase().includes(inputValue.toLowerCase()) ||
+					reverseFullname.toLowerCase().includes(inputValue.toLowerCase())
+				);
+			});
+		}
+	};
 
-
-    // Filter setup
-
-    let inputValue = '';
-    let searchResult = [];
-
-    $: if(!inputValue) searchResult = []; // <ul> is hidden if inputValue is empty
-
-    const searchPeople = () => {
-        if(inputValue) {
-            const filteredPeople = fakePeople.filter((people) => {
-                return people.name.toLowerCase().includes(inputValue.toLowerCase()) || people.surname.toLowerCase().includes(inputValue.toLowerCase());
-            });
-            searchResult = filteredPeople;
-        }
-    };
-
-    function boldString(text, query) {
-        return text.replace(new RegExp(query, 'gi'), (match) => `<b class="underline">${match}</b>`);
-    }
-
-
-
+	function boldString(fullName, query) {
+		if (!fullName.toLowerCase().includes(query.toLowerCase())) {
+			let reverseFullName = fullName.split(' ').reverse().join(' ');
+			return reverseFullName.replace(new RegExp(query, 'gi'), (match) => `<b class="underline">${match}</b>`);
+		}
+		return fullName.replace(new RegExp(query, 'gi'), (match) => `<b class="underline">${match}</b>`);
+	}
 </script>
 
 <form action="" class="w-3/4 border-albus-orange border-r-2 relative">
-    <input type="search"
-           name="searchProfile"
-           id="searchProfil"
-           placeholder="Rechercher une personne..."
-           class="h-full w-full px-6 text-xl focus:outline-none"
-           bind:value={inputValue}
-           on:input={searchPeople}
-    >
+	<input
+		type="search"
+		name="searchProfile"
+		id="searchProfil"
+		placeholder="Rechercher une personne..."
+		class="h-full w-full px-6 text-xl focus:outline-none"
+		autocomplete="off"
+		bind:value={inputValue}
+		on:input={searchPeople}
+	/>
 
-    <ul class="suggest border-r-2 border-b-2 border-albus-orange w-1/2">
-        {#each searchResult as people}
-            <li class="flex items-center p-4 bg-white hover:bg-gray-200 hover:cursor-pointer">
-                <img src={people.avatar} alt="" class="w-16 h-16 rounded-full">
-                <div class="ml-4">
-                    <h3 class="text-xl">{@html boldString(people.name, inputValue)} {@html boldString(people.surname, inputValue)}</h3>
-                    <p class="text-sm">{people.role}</p>
-                </div>
-            </li>
-        {/each}
-    </ul>
+	<ul class="suggest border-r-2 border-b-2 border-albus-orange w-1/2">
+		{#each searchResult as people}
+			<li class="flex items-center p-4 bg-white hover:bg-gray-200 hover:cursor-pointer">
+				<img src={people.avatar} alt="" class="w-16 h-16 rounded-full" />
+				<div class="ml-4">
+					<h3 class="text-xl">
+						{@html boldString(people.name + ' ' + people.surname, inputValue)}
+					</h3>
+					<p class="text-sm">{people.role}</p>
+				</div>
+			</li>
+		{/each}
+	</ul>
 </form>
-
 
 <style lang="sass">
     .suggest

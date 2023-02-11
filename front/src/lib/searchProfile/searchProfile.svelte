@@ -53,7 +53,11 @@
 					<h3 class="text-xl">
 						{@html boldString(people.name + ' ' + people.surname, inputValue)}
 					</h3>
-					<p class="text-sm">{people.role}</p>
+					{#if people.role === "teacher"}
+						<p class="text-sm">Enseignant·e</p>
+					{:else if people.role === "student"}
+						<p class="text-sm">Étudiant·e</p>
+					{/if}
 				</div>
 			</li>
 		{/each}

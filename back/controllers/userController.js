@@ -18,7 +18,15 @@ const userController = {
         res.status(404).json({ message: "No users found with this role" })
     }
 
-  }
+  },
+  getSingleUser: async (req, res) => {
+    const user = await User.findByPk(req.params.id)
+    if(user) {
+      res.json(user)
+    } else {
+      res.status(404).json({ message: "No user found with this id" })
+    }
+  },
 }
 
 export default userController

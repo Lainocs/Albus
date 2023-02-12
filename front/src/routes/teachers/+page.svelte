@@ -3,15 +3,15 @@
     const { teachers } = data
 
 </script>
-<h1 class="font-bold text-4xl mb-8">Enseignantes</h1>
+<h1 class="font-bold text-4xl mb-8">Enseignant·es</h1>
 <section class="teacher-grid">
     <main class="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3">
         {#each teachers as teacher}
-            <div class="flex gap-4 shadow-2xl px-6 py-8 rounded-xl">
+            <div class="flex gap-4 shadow-2xl px-6 py-8 rounded-xl items-center">
                 <img src="{teacher.avatar}" alt="Photo de {teacher.name} {teacher.surname}" class="rounded-full aspect-square w-1/5 object-cover">
                 <div>
-                    <h2 class="font-bold text-2xl">{teacher.name}</h2>
-                    <p>{teacher.email}</p>
+                    <h2 class="font-bold text-2xl">{teacher.name} {teacher.surname}</h2>
+                    <a href="/teachers/{teacher.id}" class="text-albus-orange">Voir le profil</a>
                 </div>
 
             </div>
@@ -29,5 +29,6 @@
 
       @media screen and (max-width: 768px)
         grid-template-columns: 1fr
+
 
 </style>

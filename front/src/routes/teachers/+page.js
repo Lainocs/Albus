@@ -1,6 +1,6 @@
 export const load = async ({ fetch }) => {
     const fetchTeachers = async () => {
-        const response = await fetch('http://localhost:3000/users/teacher')
+        const response = await fetch(`${proccess.env.APP_URI}/users/teacher`)
         const teachers = await response.json()
         return teachers
     }

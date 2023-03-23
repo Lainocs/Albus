@@ -19,6 +19,7 @@ sequelize
     app.use(morgan('dev'))
     
     app.use(router)
+    router.use('/api', router)
 
     sequelize
       .sync()

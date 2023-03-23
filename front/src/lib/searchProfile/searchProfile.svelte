@@ -1,6 +1,8 @@
 <script>
 	const fetchUsers = async () => {
-    const response = await fetch('http://localhost:3000/users')
+		// get uri from env variable
+		let uri = import.meta.env.VITE_APP_URI
+    const response = await fetch(`${uri}/users`)
 		const data = await response.json()
 		return data
   }
